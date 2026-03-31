@@ -86,6 +86,20 @@ const LAYER_CONFIG = {
     color: "#d63031",
     description: "Anomalous artifacts that challenge conventional timelines",
     visible: false
+  },
+  lidarCities: {
+    label: "LIDAR Jungle Cities",
+    icon: "🛰️",
+    color: "#00b894",
+    description: "Cities and structures discovered via LIDAR scanning beneath jungle canopy",
+    visible: false
+  },
+  gizaDiscoveries: {
+    label: "Giza Plateau Discoveries",
+    icon: "🔬",
+    color: "#ffeaa7",
+    description: "Recent discoveries including hidden chambers, second Sphinx, Hall of Amenti, and the Labyrinth",
+    visible: true
   }
 };
 
@@ -420,6 +434,40 @@ const underwaterAnomalies = [
 ];
 
 // ============================================================
+// LIDAR JUNGLE CITIES
+// ============================================================
+const lidarCities = [
+  { name: "Tikal LIDAR Network", lat: 17.2220, lng: -89.6237, info: "LIDAR revealed 60,000+ previously unknown Maya structures around Tikal, including pyramids, palaces, and a massive defensive wall system spanning 160km." },
+  { name: "El Mirador LIDAR Complex", lat: 17.7553, lng: -89.9208, info: "Aerial scanning showed El Mirador was center of a vast pre-classic Maya network with engineered causeways connecting dozens of cities." },
+  { name: "Calakmul Hidden Suburbs", lat: 18.1053, lng: -89.8108, info: "LIDAR revealed thousands of structures surrounding Calakmul, showing it was a sprawling urban center far larger than surface surveys suggested." },
+  { name: "Caracol LIDAR (Belize)", lat: 16.7636, lng: -89.1175, info: "LIDAR scans in 2009 revealed Caracol covered 200 sq km with agricultural terraces and road networks hidden under jungle canopy." },
+  { name: "Amazon Geometric Earthworks", lat: -10.0000, lng: -67.0000, info: "Hundreds of geometric earthworks (geoglyphs) discovered via deforestation and LIDAR in Acre, Brazil. Perfect circles and squares spanning 400km." },
+  { name: "Llanos de Mojos (Bolivia)", lat: -14.5000, lng: -65.0000, info: "LIDAR and satellite imagery revealed massive earthwork systems, canals, causeways, and forest islands covering 4,500 sq km — a lost Amazonian civilization." },
+  { name: "Angkor LIDAR Expansion", lat: 13.4500, lng: 103.8500, info: "2015 LIDAR survey revealed Angkor extended over 1,500 sq km — the largest pre-industrial city ever discovered. Includes unknown temples and water systems." },
+  { name: "Koh Ker LIDAR Network", lat: 13.7833, lng: 104.5333, info: "LIDAR mapping showed Koh Ker was connected to Angkor via engineered water channels spanning 100+ km through dense forest." },
+  { name: "Cotoca (Bolivia)", lat: -17.4500, lng: -62.0500, info: "LIDAR in 2022 revealed a massive pre-Hispanic Amazonian urban center with pyramids, causeways, and canals beneath dense rainforest canopy." },
+  { name: "Mosquitia Lost City", lat: 15.3000, lng: -84.9000, info: "LIDAR in Honduras in 2015 confirmed the 'Lost City of the Monkey God' — extensive ruins of an unknown civilization never documented by Spanish colonizers." },
+  { name: "Phnom Kulen (Cambodia)", lat: 13.6000, lng: 104.1000, info: "LIDAR revealed a massive city on Phnom Kulen plateau predating Angkor, with grid-pattern streets and water management infrastructure." },
+  { name: "Copan LIDAR Surrounds", lat: 14.8400, lng: -89.1400, info: "LIDAR scans around Copan revealed dense settlement extending far beyond the known ceremonial center, with terraced agriculture covering surrounding hills." },
+  { name: "Ceibal LIDAR Platform", lat: 16.5200, lng: -90.0600, info: "LIDAR at Ceibal, Guatemala revealed one of the oldest Maya ceremonial platforms — a massive 1,400m-long plaza built ~1000 BCE." },
+  { name: "Upano Valley (Ecuador)", lat: -1.8000, lng: -77.9000, info: "2024 LIDAR discovery revealed a 2,500-year-old Amazonian city complex with over 6,000 mounds, plazas, and roads — rivaling Maya urban centers." },
+];
+
+// ============================================================
+// GIZA PLATEAU DISCOVERIES
+// ============================================================
+const gizaDiscoveries = [
+  { name: "Hall of Amenti (Proposed)", lat: 29.9753, lng: 31.1376, info: "Muon tomography and GPR suggest a vast chamber system beneath the Sphinx — matching ancient Egyptian texts describing the 'Hall of Records' or 'Hall of Amenti' containing pre-flood knowledge." },
+  { name: "Second Sphinx (GPR Detection)", lat: 29.9780, lng: 31.1360, info: "Italian-Egyptian research team announced GPR evidence of a second sphinx-like structure buried east of the Great Pyramid, consistent with ancient texts describing a pair of guardian sphinxes." },
+  { name: "Great Pyramid Hidden Chamber (2017)", lat: 29.9792, lng: 31.1342, info: "ScanPyramids project using muon tomography discovered a 30-meter void above the Grand Gallery — the first major internal structure found since the 19th century." },
+  { name: "Hawara Labyrinth (Underground)", lat: 29.2717, lng: 30.8972, info: "GPR and sonar surveys at Hawara detected an enormous underground complex matching Herodotus's description of the Egyptian Labyrinth — 3,000 rooms on two levels, 'surpassing even the pyramids.'" },
+  { name: "Sphinx Water Erosion Evidence", lat: 29.9753, lng: 31.1376, info: "Geologist Robert Schoch's analysis shows vertical water erosion patterns on the Sphinx enclosure walls — erosion caused by heavy rainfall that last occurred 7000-10,000 BCE, pushing the Sphinx's age back thousands of years." },
+  { name: "Osiris Shaft", lat: 29.9770, lng: 31.1310, info: "A shaft beneath the causeway between Khafre's pyramid and Sphinx descends 30 meters through three levels to a flooded chamber containing a sarcophagus on a platform surrounded by water — matching descriptions of Osiris's burial." },
+  { name: "Khufu Ship Pit Discovery", lat: 29.9780, lng: 31.1342, info: "Two sealed pits beside the Great Pyramid contained perfectly preserved 4,600-year-old cedar ships — 43 meters long, assembled without nails using a sophisticated mortise-and-tenon system." },
+  { name: "Subterranean Chamber Anomalies", lat: 29.9792, lng: 31.1345, info: "The unfinished subterranean chamber 30m below the Great Pyramid shows tool marks inconsistent with copper tools, and a mysterious dead-end passage heading south. Its true purpose remains unknown." },
+];
+
+// ============================================================
 // LEY LINE PATHS (for arc rendering)
 // ============================================================
 // ============================================================
@@ -491,3 +539,4 @@ const leyLinePaths = [
     ]
   }
 ];
+

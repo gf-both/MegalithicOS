@@ -4,25 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MegalithicOS - Global Ancient Mysteries Map</title>
-  <script src="https://unpkg.com/globe.gl@2.33.0/dist/globe.gl.min.js"></script>
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/globe.gl@2.33.0/dist/globe.gl.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #12121a;
-      --bg-card: #1a1a2e;
-      --bg-hover: #22223a;
+      --bg-primary: #050510;
+      --bg-secondary: #0c0c1a;
+      --bg-card: #13132a;
+      --bg-hover: #1c1c38;
       --text-primary: #e8e8f0;
-      --text-secondary: #8888a8;
+      --text-secondary: #9898b8;
       --text-muted: #55556a;
-      --accent: #6c5ce7;
-      --accent-glow: rgba(108, 92, 231, 0.3);
-      --border: #2a2a3e;
-      --scrollbar-bg: #16161e;
-      --scrollbar-thumb: #3a3a4e;
+      --accent: #7c6cf7;
+      --accent-glow: rgba(124, 108, 247, 0.3);
+      --border: #1e1e3a;
+      --scrollbar-bg: #0a0a18;
+      --scrollbar-thumb: #2a2a48;
     }
 
     body {
@@ -37,126 +37,105 @@
     /* ── Header ── */
     #header {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 56px;
-      background: rgba(10, 10, 15, 0.85);
-      backdrop-filter: blur(20px);
+      top: 0; left: 0; right: 0;
+      height: 52px;
+      background: rgba(5, 5, 16, 0.8);
+      backdrop-filter: blur(24px);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      padding: 0 24px;
+      padding: 0 20px;
       z-index: 100;
       gap: 16px;
     }
 
     #header .logo {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
-      letter-spacing: 2px;
-      background: linear-gradient(135deg, #6c5ce7, #a29bfe, #fd79a8);
+      letter-spacing: 3px;
+      background: linear-gradient(135deg, #7c6cf7, #a78bfa, #f472b6);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     #header .tagline {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+      font-weight: 300;
     }
 
     #header .stats {
       margin-left: auto;
       display: flex;
-      gap: 20px;
+      gap: 18px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11px;
     }
 
-    #header .stats .stat {
-      color: var(--text-secondary);
-    }
-
-    #header .stats .stat span {
-      color: var(--accent);
-      font-weight: 600;
-    }
+    #header .stats .stat { color: var(--text-muted); }
+    #header .stats .stat span { color: #a78bfa; font-weight: 600; }
 
     /* ── Sidebar ── */
     #sidebar {
       position: fixed;
-      top: 56px;
-      left: 0;
-      bottom: 0;
-      width: 320px;
-      background: rgba(18, 18, 26, 0.92);
-      backdrop-filter: blur(20px);
+      top: 52px; left: 0; bottom: 0;
+      width: 300px;
+      background: rgba(12, 12, 26, 0.88);
+      backdrop-filter: blur(24px);
       border-right: 1px solid var(--border);
       z-index: 90;
       display: flex;
       flex-direction: column;
-      transition: transform 0.3s ease;
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1);
     }
 
-    #sidebar.collapsed {
-      transform: translateX(-320px);
-    }
+    #sidebar.collapsed { transform: translateX(-300px); }
 
     #sidebar-toggle {
       position: fixed;
-      top: 72px;
-      left: 320px;
+      top: 66px; left: 300px;
       z-index: 95;
-      width: 32px;
-      height: 32px;
+      width: 28px; height: 28px;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-left: none;
-      border-radius: 0 8px 8px 0;
-      color: var(--text-secondary);
+      border-radius: 0 6px 6px 0;
+      color: var(--text-muted);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
-      transition: all 0.3s ease;
+      font-size: 11px;
+      transition: all 0.35s cubic-bezier(.4,0,.2,1);
     }
 
-    #sidebar.collapsed ~ #sidebar-toggle {
-      left: 0;
-    }
+    #sidebar.collapsed ~ #sidebar-toggle { left: 0; }
+    #sidebar-toggle:hover { background: var(--bg-hover); color: var(--text-primary); }
 
-    #sidebar-toggle:hover {
-      background: var(--bg-hover);
-      color: var(--text-primary);
-    }
-
-    .sidebar-section {
-      padding: 16px;
-    }
+    .sidebar-section { padding: 14px 14px 8px; }
 
     .sidebar-title {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 2px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
       color: var(--text-muted);
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     #search-box {
       width: 100%;
-      padding: 10px 14px;
+      padding: 9px 12px;
       background: var(--bg-primary);
       border: 1px solid var(--border);
       border-radius: 8px;
       color: var(--text-primary);
       font-family: 'Inter', sans-serif;
-      font-size: 13px;
+      font-size: 12px;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     #search-box:focus {
@@ -164,60 +143,44 @@
       box-shadow: 0 0 0 3px var(--accent-glow);
     }
 
-    #search-box::placeholder {
-      color: var(--text-muted);
-    }
+    #search-box::placeholder { color: var(--text-muted); }
 
     .layers-container {
       flex: 1;
       overflow-y: auto;
-      padding: 0 12px 12px;
+      padding: 0 8px 8px;
     }
 
-    .layers-container::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .layers-container::-webkit-scrollbar-track {
-      background: var(--scrollbar-bg);
-    }
-
-    .layers-container::-webkit-scrollbar-thumb {
-      background: var(--scrollbar-thumb);
-      border-radius: 3px;
-    }
+    .layers-container::-webkit-scrollbar { width: 4px; }
+    .layers-container::-webkit-scrollbar-track { background: transparent; }
+    .layers-container::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 2px; }
 
     /* ── Layer Toggle ── */
     .layer-toggle {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
+      gap: 8px;
+      padding: 8px 10px;
       border-radius: 8px;
       cursor: pointer;
       transition: background 0.15s;
       user-select: none;
-      margin-bottom: 2px;
+      margin-bottom: 1px;
     }
 
-    .layer-toggle:hover {
-      background: var(--bg-hover);
-    }
+    .layer-toggle:hover { background: var(--bg-hover); }
 
     .layer-toggle .icon {
-      font-size: 18px;
-      width: 28px;
+      font-size: 16px;
+      width: 24px;
       text-align: center;
       flex-shrink: 0;
     }
 
-    .layer-toggle .label-group {
-      flex: 1;
-      min-width: 0;
-    }
+    .layer-toggle .label-group { flex: 1; min-width: 0; }
 
     .layer-toggle .label {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
       white-space: nowrap;
       overflow: hidden;
@@ -225,15 +188,14 @@
     }
 
     .layer-toggle .count {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-muted);
       font-family: 'JetBrains Mono', monospace;
     }
 
     .layer-toggle .switch {
-      width: 36px;
-      height: 20px;
-      border-radius: 10px;
+      width: 32px; height: 18px;
+      border-radius: 9px;
       background: var(--bg-primary);
       border: 1px solid var(--border);
       position: relative;
@@ -243,13 +205,11 @@
 
     .layer-toggle .switch::after {
       content: '';
-      width: 14px;
-      height: 14px;
+      width: 12px; height: 12px;
       border-radius: 50%;
       background: var(--text-muted);
       position: absolute;
-      top: 2px;
-      left: 2px;
+      top: 2px; left: 2px;
       transition: all 0.2s;
     }
 
@@ -260,88 +220,280 @@
 
     .layer-toggle.active .switch::after {
       background: white;
-      left: 18px;
+      left: 16px;
     }
 
     .layer-toggle .dot {
-      width: 8px;
-      height: 8px;
+      width: 7px; height: 7px;
       border-radius: 50%;
       flex-shrink: 0;
     }
 
-    /* ── Info Panel ── */
-    #info-panel {
+    /* ── Right-side Detail Panel ── */
+    #detail-panel {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      width: 380px;
-      max-height: 300px;
-      background: rgba(26, 26, 46, 0.95);
+      top: 16px;
+      right: 16px;
+      bottom: 16px;
+      width: 400px;
+      max-width: 40vw;
+      background: rgba(10, 10, 24, 0.92);
       backdrop-filter: blur(20px);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      z-index: 80;
-      display: none;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      border-radius: 14px;
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 16px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(124, 108, 247, 0.06);
+      transform: translateX(calc(100% + 24px));
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1), opacity 0.25s ease;
+    }
+
+    #detail-panel.visible {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #detail-panel .card-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+      flex-shrink: 0;
+    }
+
+    #detail-panel .card-image-placeholder {
+      width: 100%;
+      height: 80px;
+      background: linear-gradient(135deg, var(--bg-card), var(--bg-hover));
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      flex-shrink: 0;
+    }
+
+    #detail-panel .card-body {
+      padding: 16px 18px 20px;
       overflow-y: auto;
+      flex: 1;
     }
 
-    #info-panel.visible {
-      display: block;
-      animation: slideUp 0.3s ease;
-    }
+    #detail-panel .card-body::-webkit-scrollbar { width: 4px; }
+    #detail-panel .card-body::-webkit-scrollbar-track { background: transparent; }
+    #detail-panel .card-body::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 2px; }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    #info-panel .close-btn {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      width: 24px;
-      height: 24px;
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      cursor: pointer;
-      font-size: 16px;
-      border-radius: 4px;
-    }
-
-    #info-panel .close-btn:hover {
-      background: var(--bg-hover);
-      color: var(--text-primary);
-    }
-
-    #info-panel .site-layer {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    #info-panel .site-name {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    #info-panel .site-coords {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--text-muted);
+    #detail-panel .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
       margin-bottom: 10px;
     }
 
-    #info-panel .site-info {
-      font-size: 13px;
+    #detail-panel .card-layer {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    #detail-panel .card-name {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+
+    #detail-panel .card-coords {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    #detail-panel .coord-badge {
+      background: rgba(124, 108, 247, 0.1);
+      border: 1px solid rgba(124, 108, 247, 0.2);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .close-card-btn {
+      width: 28px; height: 28px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .close-card-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+      border-color: var(--accent);
+    }
+
+    #detail-panel .card-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 12px 0;
+    }
+
+    #detail-panel .card-section-title {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    #detail-panel .card-history {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+    #detail-panel .card-basic-info {
+      font-size: 12px;
       color: var(--text-secondary);
       line-height: 1.6;
+      padding: 10px 14px;
+      background: rgba(124, 108, 247, 0.05);
+      border: 1px solid rgba(124, 108, 247, 0.1);
+      border-radius: 8px;
+      margin-bottom: 4px;
+    }
+
+    /* ── News Feed ── */
+    #news-toggle {
+      position: fixed;
+      bottom: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 80;
+      padding: 10px 16px;
+      background: rgba(13, 13, 30, 0.9);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    #news-toggle:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    #news-panel {
+      position: fixed;
+      bottom: 60px; left: 50%; transform: translateX(-50%);
+      width: 380px;
+      max-height: 420px;
+      background: rgba(13, 13, 30, 0.95);
+      backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      z-index: 79;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 12px 48px rgba(0,0,0,0.4);
+    }
+
+    #news-panel.visible {
+      display: flex;
+      animation: slideUp 0.3s cubic-bezier(.4,0,.2,1);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #news-panel .news-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    #news-panel .news-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    #news-panel .news-list::-webkit-scrollbar { width: 4px; }
+    #news-panel .news-list::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 2px; }
+
+    .news-item {
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: default;
+      transition: background 0.15s;
+      margin-bottom: 2px;
+    }
+
+    .news-item:hover { background: var(--bg-hover); }
+
+    .news-item .news-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .news-item .news-tag {
+      background: rgba(124, 108, 247, 0.15);
+      color: #a78bfa;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .news-item .news-title {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+
+    .news-item .news-summary {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
     }
 
     /* ── Globe ── */
@@ -354,19 +506,20 @@
     /* ── Quick actions ── */
     .quick-actions {
       display: flex;
-      gap: 6px;
-      padding: 8px 12px;
+      gap: 4px;
+      padding: 8px 10px;
       border-top: 1px solid var(--border);
     }
 
     .quick-btn {
       flex: 1;
-      padding: 8px;
+      padding: 7px;
       border: 1px solid var(--border);
       border-radius: 6px;
       background: var(--bg-primary);
-      color: var(--text-secondary);
-      font-size: 11px;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 500;
       font-family: 'Inter', sans-serif;
       cursor: pointer;
       transition: all 0.15s;
@@ -384,36 +537,45 @@
       position: fixed;
       inset: 0;
       background: var(--bg-primary);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       z-index: 999;
-      transition: opacity 0.5s;
+      opacity: 1;
+      overflow: hidden;
     }
 
     #loading.hidden {
+      transition: opacity 1s ease;
       opacity: 0;
       pointer-events: none;
     }
 
-    #loading .spinner {
-      width: 48px;
-      height: 48px;
-      border: 3px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
+    #loading canvas { position: absolute; inset: 0; }
+
+    #loading .loading-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 12vh;
+      pointer-events: none;
     }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
-
     #loading .loading-text {
-      margin-top: 16px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
+      font-size: 11px;
       color: var(--text-muted);
-      letter-spacing: 2px;
+      letter-spacing: 3px;
+    }
+
+    #loading .morph-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      transition: opacity 0.38s ease, color 0.38s ease;
+      text-shadow: 0 0 12px currentColor;
     }
 
     /* ── Search results ── */
@@ -427,20 +589,17 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 12px;
+      padding: 7px 10px;
       border-radius: 6px;
       cursor: pointer;
       font-size: 12px;
       transition: background 0.15s;
     }
 
-    .search-result:hover {
-      background: var(--bg-hover);
-    }
+    .search-result:hover { background: var(--bg-hover); }
 
     .search-result .sr-dot {
-      width: 6px;
-      height: 6px;
+      width: 6px; height: 6px;
       border-radius: 50%;
       flex-shrink: 0;
     }
@@ -456,29 +615,95 @@
       font-size: 10px;
       color: var(--text-muted);
     }
+
+    /* ── HTML marker tooltip ── */
+    .marker-tooltip {
+      pointer-events: none;
+      position: relative;
+    }
+
+    .marker-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .marker-dot::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+      opacity: 0.4;
+      animation: pulse-ring 2s ease-out infinite;
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(1); opacity: 0.5; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+
+    .marker-label {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(5, 5, 16, 0.9);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(124, 108, 247, 0.3);
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: #e8e8f0;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .marker-label::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 4px solid transparent;
+      border-top-color: rgba(5, 5, 16, 0.9);
+    }
+
+    .marker-big .marker-dot {
+      width: 14px;
+      height: 14px;
+    }
   </style>
 </head>
 <body>
 
 <div id="loading">
-  <div class="spinner"></div>
-  <div class="loading-text">INITIALIZING MEGALITHICOS</div>
+  <canvas id="loading-canvas"></canvas>
+  <div class="loading-overlay">
+    <div class="morph-label" id="morph-label">DNA HELIX</div>
+    <div class="loading-text">INITIALIZING MEGALITHICOS</div>
+  </div>
 </div>
 
 <div id="header">
-  <div class="logo">MEGALITHIC<span style="color: #fd79a8">OS</span></div>
+  <div class="logo">MEGALITHIC<span style="-webkit-text-fill-color: #f472b6">OS</span></div>
   <div class="tagline">GLOBAL ANCIENT MYSTERIES MAP</div>
   <div class="stats">
-    <div class="stat">Sites: <span id="total-sites">0</span></div>
-    <div class="stat">Visible: <span id="visible-sites">0</span></div>
-    <div class="stat">Layers: <span id="active-layers">0</span></div>
+    <div class="stat">SITES <span id="total-sites">0</span></div>
+    <div class="stat">VISIBLE <span id="visible-sites">0</span></div>
+    <div class="stat">LAYERS <span id="active-layers">0</span></div>
   </div>
 </div>
 
 <div id="sidebar">
   <div class="sidebar-section">
     <div class="sidebar-title">Search Sites</div>
-    <input type="text" id="search-box" placeholder="Search all sites..." />
+    <input type="text" id="search-box" placeholder="Search 268+ ancient sites..." />
     <div id="search-results"></div>
   </div>
   <div class="sidebar-section" style="padding-top: 0;">
@@ -494,17 +719,37 @@
 
 <button id="sidebar-toggle" onclick="toggleSidebar()">◀</button>
 
-<div id="info-panel">
-  <button class="close-btn" onclick="closeInfoPanel()">✕</button>
-  <div class="site-layer" id="panel-layer"></div>
-  <div class="site-name" id="panel-name"></div>
-  <div class="site-coords" id="panel-coords"></div>
-  <div class="site-info" id="panel-info"></div>
+<div id="detail-panel">
+  <img id="card-image" class="card-image" alt="" style="display:none" />
+  <div id="card-image-placeholder" class="card-image-placeholder"></div>
+  <div class="card-body">
+    <div class="card-header">
+      <div>
+        <div class="card-layer" id="card-layer"></div>
+        <div class="card-name" id="card-name"></div>
+        <div class="card-coords" id="card-coords"></div>
+      </div>
+      <button class="close-card-btn" onclick="closeInfoPanel()">✕</button>
+    </div>
+    <div class="card-basic-info" id="card-basic-info"></div>
+    <div id="card-extended" style="display:none">
+      <div class="card-divider"></div>
+      <div class="card-section-title">Hidden History & Mysteries</div>
+      <div class="card-history" id="card-history"></div>
+    </div>
+  </div>
+</div>
+
+<button id="news-toggle" onclick="toggleNews()">📡 Ancient Mysteries Feed</button>
+<div id="news-panel">
+  <div class="news-header">📡 Alternative Archaeology & Discovery Feed</div>
+  <div class="news-list" id="news-list"></div>
 </div>
 
 <div id="globe-container"></div>
 
 <script src="data.js"></script>
+<script src="site-details.js"></script>
 <script>
 // ============================================================
 // Data mapping
@@ -521,8 +766,38 @@ const LAYER_DATA = {
   ancientObservatories: ancientObservatories,
   ancientQuarries: ancientQuarries,
   underwaterAnomalies: underwaterAnomalies,
-  ooparts: ooparts
+  ooparts: ooparts,
+  lidarCities: lidarCities,
+  gizaDiscoveries: gizaDiscoveries
 };
+
+// Altitude per layer type for visual separation
+const LAYER_ALTITUDE = {
+  megalithic: 0.005,
+  sunkenCities: 0.002,
+  hiddenPyramids: 0.008,
+  magneticAnomalies: 0.012,
+  ufoCrashes: 0.015,
+  natronDeposits: 0.003,
+  leyLines: 0.006,
+  geoglyphs: 0.004,
+  ancientObservatories: 0.007,
+  ancientQuarries: 0.003,
+  underwaterAnomalies: 0.002,
+  ooparts: 0.01,
+  lidarCities: 0.009,
+  gizaDiscoveries: 0.006
+};
+
+const KEY_SITES = new Set([
+  'Great Pyramid of Giza', 'Stonehenge', 'Göbekli Tepe', 'Machu Picchu',
+  'Angkor Wat', 'Teotihuacan', 'Easter Island (Rapa Nui)', 'Roswell',
+  'Baalbek', 'Puma Punku', 'Tiwanaku', 'Nan Madol', 'Derinkuyu',
+  'Sacsayhuaman', 'Acropolis of Athens', 'Petra', 'Chichen Itza',
+  'Newgrange', 'Western Wall (Kotel)', 'Bosnian Pyramid of the Sun',
+  'Yonaguni Monument', 'Eye of the Sahara (Richat)', 'Nazca Lines',
+  'Antikythera Mechanism', 'Lalibela Rock Churches'
+]);
 
 // State
 const layerVisibility = {};
@@ -532,6 +807,7 @@ Object.keys(LAYER_CONFIG).forEach(k => {
 
 let allPoints = [];
 let globe;
+let hoveredPoint = null;
 
 // ============================================================
 // Build flat points array
@@ -546,7 +822,9 @@ function buildPoints() {
         layerKey,
         color: config.color,
         layerLabel: config.label,
-        icon: config.icon
+        icon: config.icon,
+        altitude: LAYER_ALTITUDE[layerKey] || 0.005,
+        isKey: KEY_SITES.has(site.name)
       });
     });
   });
@@ -557,6 +835,404 @@ function getVisiblePoints() {
 }
 
 // ============================================================
+// ============================================================
+// Loading Particle Animation: DNA → Pyramid → Globe
+// ============================================================
+(function initLoadingAnimation() {
+  const canvas = document.getElementById('loading-canvas');
+  if (!canvas) return;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x040410);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+  // ── Particle count ─────────────────────────────────────────
+  const N = 950;
+
+  // ── Colour palette ─────────────────────────────────────────
+  // DNA strands: two slightly different silvers for depth
+  const COL_STRAND_A = new THREE.Color('#d0dcff'); // strand A – cool silver
+  const COL_STRAND_B = new THREE.Color('#9ab0e8'); // strand B – slightly dimmer
+  // Nucleotide base-pair colours (A/T/G/C like sequencing gel)
+  const NUCLEOTIDES = [
+    new THREE.Color('#ff5252'), // Adenine  – red
+    new THREE.Color('#ffd740'), // Thymine  – amber
+    new THREE.Color('#69f0ae'), // Guanine  – green
+    new THREE.Color('#40c4ff'), // Cytosine – cyan-blue
+  ];
+  const COL_PYRA  = new THREE.Color('#ffc400'); // Egyptian gold
+  const COL_GLOBE = new THREE.Color('#a070ff'); // violet
+
+  // Shape-accent hex for the label text
+  const LABEL_HEX = ['#d0dcff', '#ffc400', '#a070ff'];
+
+  // ── DNA constants ──────────────────────────────────────────
+  // 2 full turns = the classic "twisted ladder" everyone recognises.
+  // Fewer strands pts + big rung budget = rungs are the dominant visual.
+  const DNA_TURNS   = 2;
+  const DNA_H       = 2.8;
+  const DNA_R       = 1.4;    // wide enough that strands are clearly separated
+  const DNA_STRAND  = 200;    // pts per strand  (200 × 2 = 400)
+  const DNA_RUNGS   = 10;     // 10 rungs over 2 turns = one rung every 72°
+  const _rungPts    = N - DNA_STRAND * 2;             // 550 rung particles
+  const _ptsPerRung = Math.ceil(_rungPts / DNA_RUNGS); // ~55 per rung → thick, bright bars
+
+  // ── Shape generators (fully deterministic) ────────────────
+
+  function dnaShape(i) {
+    if (i < DNA_STRAND) {
+      // Strand A
+      const t = i / DNA_STRAND;
+      const a = t * Math.PI * 2 * DNA_TURNS;
+      return [Math.cos(a) * DNA_R, t * DNA_H - DNA_H / 2, Math.sin(a) * DNA_R];
+    }
+    if (i < DNA_STRAND * 2) {
+      // Strand B — offset by π (antiparallel)
+      const t = (i - DNA_STRAND) / DNA_STRAND;
+      const a = t * Math.PI * 2 * DNA_TURNS + Math.PI;
+      return [Math.cos(a) * DNA_R, t * DNA_H - DNA_H / 2, Math.sin(a) * DNA_R];
+    }
+    // Rungs: solid bars bridging the two strands at regular intervals
+    const r        = i - DNA_STRAND * 2;
+    const rungIdx  = Math.floor(r / _ptsPerRung);
+    const ptInRung = r % _ptsPerRung;
+    const t        = (rungIdx + 0.5) / DNA_RUNGS;
+    const a        = t * Math.PI * 2 * DNA_TURNS;
+    const y        = t * DNA_H - DNA_H / 2;
+    const frac     = ptInRung / Math.max(_ptsPerRung - 1, 1); // 0 → 1 across bar
+    const x1 = Math.cos(a)           * DNA_R, z1 = Math.sin(a)           * DNA_R;
+    const x2 = Math.cos(a + Math.PI) * DNA_R, z2 = Math.sin(a + Math.PI) * DNA_R;
+    return [x1 + (x2 - x1) * frac, y, z1 + (z2 - z1) * frac];
+  }
+
+  function dnaColor(i) {
+    if (i < DNA_STRAND)     return COL_STRAND_A;
+    if (i < DNA_STRAND * 2) return COL_STRAND_B;
+    const rungIdx = Math.floor((i - DNA_STRAND * 2) / _ptsPerRung);
+    return NUCLEOTIDES[rungIdx % 4];
+  }
+
+  function pyramidShape(i) {
+    // Crisp wireframe: 4 lateral ridge-edges + 4 base edges + stepped horizontal courses
+    const BASE = 1.6, H = 2.1;
+    const BY   = -H * 0.5;
+    const APEX = [0, H * 0.5, 0];
+    const corners = [[-BASE,BY,-BASE],[BASE,BY,-BASE],[BASE,BY,BASE],[-BASE,BY,BASE]];
+
+    const RIDGE_N  = 320;  // 4 ridges, 80 pts each
+    const BASE_N   = 120;  // 4 base edges, 30 pts each
+    const COURSE_N = N - RIDGE_N - BASE_N; // 510 pts in horizontal courses
+    const COURSES  = 10;
+
+    const ptsRidge  = Math.floor(RIDGE_N  / 4);
+    const ptsBase   = Math.floor(BASE_N   / 4);
+    const ptsCourse = Math.floor(COURSE_N / COURSES);
+
+    if (i < RIDGE_N) {
+      const edge = Math.floor(i / ptsRidge) % 4;
+      const t    = (i % ptsRidge) / (ptsRidge - 1);
+      // Bias particles denser near the apex for a sharper point
+      const tb   = t * t;
+      const c    = corners[edge];
+      return [c[0]+(APEX[0]-c[0])*tb, c[1]+(APEX[1]-c[1])*tb, c[2]+(APEX[2]-c[2])*tb];
+    }
+    if (i < RIDGE_N + BASE_N) {
+      const j    = i - RIDGE_N;
+      const edge = Math.floor(j / ptsBase) % 4;
+      const t    = (j % ptsBase) / ptsBase;
+      const c0   = corners[edge], c1 = corners[(edge + 1) % 4];
+      return [c0[0]+(c1[0]-c0[0])*t, BY, c0[2]+(c1[2]-c0[2])*t];
+    }
+    // Horizontal courses — square rings climbing toward apex
+    const r        = i - RIDGE_N - BASE_N;
+    const courseIdx = Math.floor(r / ptsCourse) % COURSES;
+    const ptIn      = r % ptsCourse;
+    const progress  = (courseIdx + 1) / (COURSES + 1);
+    const half      = BASE * (1 - progress);
+    const ringY     = BY + progress * H;
+    const t         = ptIn / ptsCourse;
+    const seg       = Math.floor(t * 4);
+    const sf        = t * 4 - seg;
+    const sq        = [[1,1],[-1,1],[-1,-1],[1,-1]];
+    const s0 = sq[seg%4], s1 = sq[(seg+1)%4];
+    return [(s0[0]+(s1[0]-s0[0])*sf)*half, ringY, (s0[1]+(s1[1]-s0[1])*sf)*half];
+  }
+
+  function globeShape(i) {
+    const R     = 1.75;
+    const LATS  = 11, LONS = 16;
+    const LAT_N = Math.floor(N * 0.50);
+    const LON_N = N - LAT_N;
+    const pL    = Math.floor(LAT_N / LATS);
+    const pM    = Math.floor(LON_N / LONS);
+    if (i < LAT_N) {
+      const ring = Math.floor(i / pL) % LATS;
+      const t    = (i % pL) / pL;
+      const phi  = ((ring + 1) / (LATS + 1)) * Math.PI;
+      const th   = t * Math.PI * 2;
+      return [R*Math.sin(phi)*Math.cos(th), R*Math.cos(phi), R*Math.sin(phi)*Math.sin(th)];
+    }
+    const j   = i - LAT_N;
+    const arc = Math.floor(j / pM) % LONS;
+    const t   = (j % pM) / pM;
+    const th  = (arc / LONS) * Math.PI * 2;
+    const phi = t * Math.PI;
+    return [R*Math.sin(phi)*Math.cos(th), R*Math.cos(phi), R*Math.sin(phi)*Math.sin(th)];
+  }
+
+  const SHAPE_FNS    = [dnaShape, pyramidShape, globeShape];
+  const SHAPE_COLORS = [dnaColor, () => COL_PYRA, () => COL_GLOBE];
+  const LABELS       = ['DNA HELIX', 'PYRAMID', 'GLOBE'];
+
+  // ── Chaos burst positions (regenerated each morph for variety) ─
+  const chaosPos = new Float32Array(N * 3);
+  function rebuildChaos() {
+    for (let i = 0; i < N; i++) {
+      const phi = Math.acos(2 * Math.random() - 1);
+      const th  = Math.random() * Math.PI * 2;
+      const r   = 2.4 + Math.random() * 1.2;
+      chaosPos[i*3]   = r * Math.sin(phi) * Math.cos(th);
+      chaosPos[i*3+1] = r * Math.cos(phi);
+      chaosPos[i*3+2] = r * Math.sin(phi) * Math.sin(th);
+    }
+  }
+
+  // ── Build geometry ─────────────────────────────────────────
+  const geo       = new THREE.BufferGeometry();
+  const positions = new Float32Array(N * 3);
+  const colors    = new Float32Array(N * 3);
+  const sizes     = new Float32Array(N);
+  const phases    = new Float32Array(N);
+
+  for (let i = 0; i < N; i++) {
+    const [x, y, z] = dnaShape(i);
+    positions[i*3] = x; positions[i*3+1] = y; positions[i*3+2] = z;
+    const c = dnaColor(i);
+    colors[i*3] = c.r; colors[i*3+1] = c.g; colors[i*3+2] = c.b;
+    // Strands visible and bold immediately; rungs start hidden
+    sizes[i]  = i >= DNA_STRAND * 2 ? 0 : 2.5;
+    phases[i] = (i / N) * Math.PI * 2;
+  }
+
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
+  geo.setAttribute('size',     new THREE.BufferAttribute(sizes, 1));
+  geo.setAttribute('phase',    new THREE.BufferAttribute(phases, 1));
+
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { uTime: { value: 0 } },
+    vertexShader: `
+      attribute float size;
+      attribute float phase;
+      varying vec3  vColor;
+      varying float vAlpha;
+      uniform float uTime;
+      void main() {
+        vColor = color;
+        vAlpha = 0.55 + 0.45 * sin(uTime * 1.7 + phase);
+        vec4 mv = modelViewMatrix * vec4(position, 1.0);
+        gl_PointSize = size * (190.0 / -mv.z);
+        gl_Position  = projectionMatrix * mv;
+      }
+    `,
+    fragmentShader: `
+      varying vec3  vColor;
+      varying float vAlpha;
+      void main() {
+        float d = length(gl_PointCoord - vec2(0.5));
+        if (d > 0.5) discard;
+        // White-hot core bleeds out into the particle's colour
+        float core = exp(-d * 14.0);          // tight bright centre
+        float body = exp(-d *  5.5);          // wider coloured body
+        vec3  col  = mix(vColor, vec3(1.8, 1.8, 1.8), core * 0.75);
+        gl_FragColor = vec4(col, vAlpha * body);
+      }
+    `,
+    transparent: true,
+    depthWrite: false,
+    vertexColors: true,
+    blending: THREE.AdditiveBlending,
+  });
+
+  const points = new THREE.Points(geo, mat);
+  scene.add(points);
+
+  // ── Morph state ────────────────────────────────────────────
+  let shapeIdx   = 0;
+  let morphT     = 0;
+  let morphing   = false;
+  let done       = false;
+  let currentPos = positions.slice();
+  let targetPos  = new Float32Array(N * 3);
+  let currentCol = colors.slice();
+  let targetCol  = new Float32Array(N * 3);
+
+  // DNA sequential reveal: strands alone first, then rungs bottom-to-top
+  let dnaStartTime   = -1;   // latched on first frame
+  const STRAND_PAUSE = 1.5;  // seconds of strands-only before first rung appears
+  const RUNG_REVEAL  = 2.5;  // seconds for all rungs to finish growing in
+
+  function triggerMorph() {
+    if (done) return;
+    shapeIdx++;
+    if (shapeIdx >= SHAPE_FNS.length) { done = true; return; }
+
+    // Freeze rung sizes at current value before scatter (some may still be growing)
+    // and normalise all to a flat value so pyramid/globe sizes are consistent
+    const sizeAttr = geo.attributes.size;
+    for (let i = 0; i < N; i++) sizeAttr.array[i] = 3.0;
+    sizeAttr.needsUpdate = true;
+
+    // Snapshot actual live positions as the "from" for the scatter phase
+    currentPos = geo.attributes.position.array.slice();
+    currentCol = geo.attributes.color.array.slice();
+
+    const shapeFn = SHAPE_FNS[shapeIdx];
+    const colorFn = SHAPE_COLORS[shapeIdx];
+    for (let i = 0; i < N; i++) {
+      const [x,y,z] = shapeFn(i);
+      targetPos[i*3] = x; targetPos[i*3+1] = y; targetPos[i*3+2] = z;
+      const c = colorFn(i);
+      targetCol[i*3] = c.r; targetCol[i*3+1] = c.g; targetCol[i*3+2] = c.b;
+    }
+    rebuildChaos();
+    morphT = 0; morphing = true;
+
+    const label = document.getElementById('morph-label');
+    if (label) {
+      label.style.opacity = '0';
+      setTimeout(() => {
+        label.textContent = LABELS[shapeIdx];
+        label.style.color = LABEL_HEX[shapeIdx];
+        label.style.opacity = '1';
+      }, 420);
+    }
+  }
+
+  // Per-shape hold times:
+  //   DNA  : 1.5 s strands-only + 2.5 s rung reveal + 1.2 s rest = 5.2 s
+  //   Pyramid: morph lands ~0.9 s in, visible for ~4.6 s before globe morph
+  let morphTimerRef = setTimeout(function morphChain() {
+    triggerMorph();                                     // DNA → Pyramid
+    if (!done) morphTimerRef = setTimeout(() => {
+      triggerMorph();                                   // Pyramid → Globe
+    }, 5500);
+  }, 5200);
+
+  // ── Camera: slow cinematic orbit ──────────────────────────
+  const CAM_R = 5.0;
+
+  // ── Animation loop ─────────────────────────────────────────
+  let running = true;
+  function animateLoading() {
+    if (!running) return;
+    requestAnimationFrame(animateLoading);
+    const time = performance.now() * 0.001;
+    mat.uniforms.uTime.value = time;
+
+    // Latch start time on first frame
+    if (dnaStartTime < 0) dnaStartTime = time;
+
+    // ── DNA rung sequential reveal ────────────────────────────
+    // Strands are already visible. Rungs grow in bottom → top over RUNG_REVEAL seconds.
+    if (shapeIdx === 0 && !morphing) {
+      const elapsed   = time - dnaStartTime;
+      const sizeAttr  = geo.attributes.size;
+      let   dirty     = false;
+      for (let i = DNA_STRAND * 2; i < N; i++) {
+        const rungIdx = Math.floor((i - DNA_STRAND * 2) / _ptsPerRung);
+        // First rung appears at STRAND_PAUSE; last rung at STRAND_PAUSE + RUNG_REVEAL*0.75
+        const rungDelay = STRAND_PAUSE + (rungIdx / DNA_RUNGS) * RUNG_REVEAL * 0.75;
+        // Each rung grows from 0→full in RUNG_REVEAL*0.25 = ~0.625 s
+        const rungT = Math.min(Math.max((elapsed - rungDelay) / (RUNG_REVEAL * 0.25), 0), 1);
+        const sz    = 4.5 * rungT;
+        if (sizeAttr.array[i] !== sz) { sizeAttr.array[i] = sz; dirty = true; }
+      }
+      if (dirty) sizeAttr.needsUpdate = true;
+    }
+
+    // Orbit camera around origin — reveals 3-D depth of each shape
+    camera.position.x = Math.sin(time * 0.14) * CAM_R;
+    camera.position.z = Math.cos(time * 0.14) * CAM_R;
+    camera.position.y = Math.sin(time * 0.05) * 0.7;
+    camera.lookAt(0, 0, 0);
+
+    if (morphing) {
+      morphT = Math.min(morphT + 0.018, 1); // ~55 frames total
+
+      const posAttr = geo.attributes.position;
+      const colAttr = geo.attributes.color;
+
+      if (morphT <= 0.38) {
+        // ── Phase 1: dissolve — scatter to chaos, bleach to white ──
+        const t1 = morphT / 0.38;
+        const e  = 1 - (1 - t1) * (1 - t1); // ease-out quad
+        for (let i = 0; i < N; i++) {
+          const i3 = i * 3;
+          posAttr.array[i3]   = currentPos[i3]   + (chaosPos[i3]   - currentPos[i3])   * e;
+          posAttr.array[i3+1] = currentPos[i3+1] + (chaosPos[i3+1] - currentPos[i3+1]) * e;
+          posAttr.array[i3+2] = currentPos[i3+2] + (chaosPos[i3+2] - currentPos[i3+2]) * e;
+          // Bleach toward white as particles scatter
+          colAttr.array[i3]   = currentCol[i3]   + (1 - currentCol[i3])   * e * 0.8;
+          colAttr.array[i3+1] = currentCol[i3+1] + (1 - currentCol[i3+1]) * e * 0.8;
+          colAttr.array[i3+2] = currentCol[i3+2] + (1 - currentCol[i3+2]) * e * 0.8;
+        }
+      } else {
+        // ── Phase 2: crystallise — converge from chaos to target ──
+        const t2 = (morphT - 0.38) / 0.62;
+        const e  = t2 < 0.5 ? 2*t2*t2 : 1 - Math.pow(-2*t2+2,2)/2; // ease-in-out
+        for (let i = 0; i < N; i++) {
+          const i3 = i * 3;
+          posAttr.array[i3]   = chaosPos[i3]   + (targetPos[i3]   - chaosPos[i3])   * e;
+          posAttr.array[i3+1] = chaosPos[i3+1] + (targetPos[i3+1] - chaosPos[i3+1]) * e;
+          posAttr.array[i3+2] = chaosPos[i3+2] + (targetPos[i3+2] - chaosPos[i3+2]) * e;
+          // Resolve from white into the new shape's colour
+          colAttr.array[i3]   = 1 + (targetCol[i3]   - 1) * e;
+          colAttr.array[i3+1] = 1 + (targetCol[i3+1] - 1) * e;
+          colAttr.array[i3+2] = 1 + (targetCol[i3+2] - 1) * e;
+        }
+      }
+
+      posAttr.needsUpdate = true;
+      colAttr.needsUpdate = true;
+
+      if (morphT >= 1) {
+        morphing   = false;
+        currentPos = targetPos.slice();
+        currentCol = targetCol.slice();
+      }
+    }
+
+    renderer.render(scene, camera);
+  }
+  animateLoading();
+
+  // Set initial label colour
+  const initLabel = document.getElementById('morph-label');
+  if (initLabel) initLabel.style.color = LABEL_HEX[0];
+
+  // ── Cleanup when loading screen hides ──────────────────────
+  const observer = new MutationObserver(() => {
+    const el = document.getElementById('loading');
+    if (el && el.classList.contains('hidden')) {
+      clearTimeout(morphTimerRef);
+      setTimeout(() => { running = false; renderer.dispose(); }, 1200);
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.getElementById('loading'), { attributes: true });
+
+  window.addEventListener('resize', () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+  });
+})();
+
+// ============================================================
 // Initialize Globe
 // ============================================================
 function initGlobe() {
@@ -565,53 +1241,166 @@ function initGlobe() {
   globe = Globe()(container)
     .globeImageUrl('https://unpkg.com/three-globe@2.33.0/example/img/earth-night.jpg')
     .bumpImageUrl('https://unpkg.com/three-globe@2.33.0/example/img/earth-topology.png')
-    .backgroundImageUrl('https://unpkg.com/three-globe@2.33.0/example/img/night-sky.png')
+    .backgroundColor('#050510')
     .showAtmosphere(true)
-    .atmosphereColor('#6c5ce7')
-    .atmosphereAltitude(0.2)
+    .atmosphereColor('#5b4cc4')
+    .atmosphereAltitude(0.25)
+
+    // WebGL points — much faster than HTML elements
     .pointsData(getVisiblePoints())
-    .pointAltitude(0.01)
-    .pointRadius(d => {
-      // Bigger points for key sites
-      if (['Great Pyramid of Giza', 'Stonehenge', 'Göbekli Tepe', 'Machu Picchu', 'Angkor Wat', 'Teotihuacan', 'Easter Island (Rapa Nui)', 'Roswell', 'Baalbek'].includes(d.name)) {
-        return 0.35;
-      }
-      return 0.2;
-    })
+    .pointLat(d => d.lat)
+    .pointLng(d => d.lng)
+    .pointAltitude(d => d.isKey ? 0.015 : 0.008)
+    .pointRadius(d => d.isKey ? 0.7 : 0.45)
     .pointColor(d => d.color)
-    .pointLabel('')
-    .onPointClick(handlePointClick)
-    .onPointHover(handlePointHover)
+    .pointResolution(8)
+    .onPointClick(d => handlePointClick(d))
+    .onPointHover(d => {
+      container.style.cursor = d ? 'pointer' : 'grab';
+      if (d) {
+        globe.htmlElementsData([d]);
+      } else {
+        globe.htmlElementsData([]);
+      }
+    })
+
+    // Minimal HTML layer — only for hover label (1 element max)
+    .htmlElementsData([])
+    .htmlLat(d => d.lat)
+    .htmlLng(d => d.lng)
+    .htmlAltitude(d => d.isKey ? 0.015 : 0.01)
+    .htmlElement(d => {
+      const el = document.createElement('div');
+      el.className = 'marker-tooltip';
+      el.innerHTML = `<div class="marker-label" style="opacity:1">${d.icon} ${d.name}</div>`;
+      el.style.pointerEvents = 'none';
+      return el;
+    })
+
     // Arcs for ley lines
     .arcsData(getVisibleArcs())
     .arcStartLat(d => d.startLat)
     .arcStartLng(d => d.startLng)
     .arcEndLat(d => d.endLat)
     .arcEndLng(d => d.endLng)
-    .arcColor(() => ['rgba(26, 188, 156, 0.6)', 'rgba(26, 188, 156, 0.2)'])
-    .arcDashLength(0.4)
-    .arcDashGap(0.2)
-    .arcDashAnimateTime(4000)
-    .arcStroke(0.4)
+    .arcColor(() => ['rgba(26, 188, 156, 0.7)', 'rgba(26, 188, 156, 0.15)'])
+    .arcDashLength(0.5)
+    .arcDashGap(0.15)
+    .arcDashAnimateTime(3000)
+    .arcStroke(0.5)
+
     // Rings on click
     .ringsData([])
-    .ringColor(() => t => `rgba(108, 92, 231, ${1 - t})`)
-    .ringMaxRadius(3)
-    .ringPropagationSpeed(2)
-    .ringRepeatPeriod(1500);
+    .ringColor(() => t => `rgba(124, 108, 247, ${Math.max(0, 1 - t)})`)
+    .ringMaxRadius(4)
+    .ringPropagationSpeed(3)
+    .ringRepeatPeriod(1200);
 
-  // Auto-rotate
+  // Controls — smoother, less aggressive
   globe.controls().autoRotate = true;
-  globe.controls().autoRotateSpeed = 0.4;
+  globe.controls().autoRotateSpeed = 0.3;
   globe.controls().enableDamping = true;
+  globe.controls().dampingFactor = 0.25;
+  globe.controls().rotateSpeed = 0.4;
+  globe.controls().zoomSpeed = 0.6;
+  globe.controls().minDistance = 120;
 
-  // Initial camera
-  globe.pointOfView({ lat: 30, lng: 31, altitude: 2.5 });
+  // Stop auto-rotate when user starts interacting, resume after 4s idle
+  let idleTimer = null;
+  const resumeAutoRotate = () => {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      globe.controls().autoRotate = true;
+      globe.controls().autoRotateSpeed = 0.3;
+    }, 4000);
+  };
+  const pauseAutoRotate = () => {
+    globe.controls().autoRotate = false;
+    resumeAutoRotate();
+  };
+  container.addEventListener('mousedown', pauseAutoRotate);
+  container.addEventListener('wheel', pauseAutoRotate);
+  container.addEventListener('touchstart', pauseAutoRotate);
 
-  // Hide loading
+  // Initial view - centered on Giza
+  globe.pointOfView({ lat: 28, lng: 31, altitude: 2.2 });
+
+  // Customize scene lighting
+  const scene = globe.scene();
+  scene.children.forEach(c => {
+    if (c.isDirectionalLight) c.intensity = 0.6;
+    if (c.isAmbientLight) c.intensity = 0.8;
+  });
+
+  const ambientLight = new THREE.AmbientLight(0x404060, 0.3);
+  scene.add(ambientLight);
+
+  // ── Particle Starfield ──
+  // Living particle background instead of static image
+  const starCount = 3000;
+  const starGeo = new THREE.BufferGeometry();
+  const starPos = new Float32Array(starCount * 3);
+  const starSizes = new Float32Array(starCount);
+  const starPhases = new Float32Array(starCount);
+  for (let i = 0; i < starCount; i++) {
+    const r = 400 + Math.random() * 600;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    starPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+    starPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+    starPos[i * 3 + 2] = r * Math.cos(phi);
+    starSizes[i] = 0.5 + Math.random() * 2.0;
+    starPhases[i] = Math.random() * Math.PI * 2;
+  }
+  starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+  starGeo.setAttribute('size', new THREE.BufferAttribute(starSizes, 1));
+  starGeo.setAttribute('phase', new THREE.BufferAttribute(starPhases, 1));
+
+  const starMat = new THREE.ShaderMaterial({
+    uniforms: { uTime: { value: 0 } },
+    vertexShader: `
+      attribute float size;
+      attribute float phase;
+      uniform float uTime;
+      varying float vAlpha;
+      void main() {
+        vAlpha = 0.3 + 0.7 * (0.5 + 0.5 * sin(uTime * 0.5 + phase));
+        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+        gl_PointSize = size * (200.0 / -mvPosition.z);
+        gl_Position = projectionMatrix * mvPosition;
+      }
+    `,
+    fragmentShader: `
+      varying float vAlpha;
+      void main() {
+        float d = length(gl_PointCoord - vec2(0.5));
+        if (d > 0.5) discard;
+        float glow = 1.0 - smoothstep(0.0, 0.5, d);
+        gl_FragColor = vec4(0.75, 0.72, 0.95, vAlpha * glow * 0.8);
+      }
+    `,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  });
+
+  const starField = new THREE.Points(starGeo, starMat);
+  scene.add(starField);
+
+  // Animate starfield twinkle + slow drift
+  function animateStars() {
+    requestAnimationFrame(animateStars);
+    starMat.uniforms.uTime.value = performance.now() * 0.001;
+    starField.rotation.y += 0.00003;
+    starField.rotation.x += 0.00001;
+  }
+  animateStars();
+
+  // Hide loading — wait for full morph cycle to complete + 2 s of globe resting
+  // DNA(5.2s) + morph(0.9s) + Pyramid(5.5s) + morph(0.9s) + globe rest(2s) ≈ 14.5 s
   setTimeout(() => {
     document.getElementById('loading').classList.add('hidden');
-  }, 1500);
+  }, 14500);
 }
 
 // ============================================================
@@ -640,37 +1429,148 @@ function getVisibleArcs() {
 function handlePointClick(point) {
   if (!point) return;
 
-  // Stop rotation
+  // Stop rotation on click — idle timer will resume it
   globe.controls().autoRotate = false;
 
-  // Ring effect
+  // Ring effect at click location
   globe.ringsData([{ lat: point.lat, lng: point.lng }]);
 
-  // Fly to
-  globe.pointOfView({ lat: point.lat, lng: point.lng, altitude: 1.0 }, 1000);
+  // Gentle nudge toward the point — don't zoom in aggressively
+  const pov = globe.pointOfView();
+  globe.pointOfView({
+    lat: point.lat,
+    lng: point.lng,
+    altitude: Math.min(pov.altitude, 1.8)
+  }, 800);
 
-  // Show panel
   showInfoPanel(point);
 }
 
-function handlePointHover(point) {
-  document.body.style.cursor = point ? 'pointer' : 'default';
-}
-
 function showInfoPanel(point) {
-  const panel = document.getElementById('info-panel');
-  document.getElementById('panel-layer').textContent = `${point.icon} ${point.layerLabel}`;
-  document.getElementById('panel-layer').style.color = point.color;
-  document.getElementById('panel-name').textContent = point.name;
-  document.getElementById('panel-coords').textContent = `${point.lat.toFixed(4)}°, ${point.lng.toFixed(4)}°`;
-  document.getElementById('panel-info').textContent = point.info;
+  const panel = document.getElementById('detail-panel');
+  const details = SITE_DETAILS[point.name];
+
+  // Layer badge
+  document.getElementById('card-layer').textContent = `${point.icon} ${point.layerLabel}`;
+  document.getElementById('card-layer').style.color = point.color;
+
+  // Name
+  document.getElementById('card-name').textContent = point.name;
+
+  // Coords
+  document.getElementById('card-coords').innerHTML = `
+    <span class="coord-badge">${point.lat >= 0 ? point.lat.toFixed(4) + '°N' : (-point.lat).toFixed(4) + '°S'}</span>
+    <span class="coord-badge">${point.lng >= 0 ? point.lng.toFixed(4) + '°E' : (-point.lng).toFixed(4) + '°W'}</span>
+  `;
+
+  // Basic info
+  document.getElementById('card-basic-info').textContent = point.info;
+
+  // Image — use site-details image, then Wikimedia search fallback, then icon placeholder
+  const imgEl = document.getElementById('card-image');
+  const placeholderEl = document.getElementById('card-image-placeholder');
+  const showPlaceholder = () => {
+    imgEl.style.display = 'none';
+    placeholderEl.style.display = 'flex';
+    placeholderEl.textContent = point.icon;
+  };
+  if (details && details.image) {
+    imgEl.src = details.image;
+    imgEl.alt = point.name;
+    imgEl.style.display = 'block';
+    imgEl.onerror = showPlaceholder;
+    placeholderEl.style.display = 'none';
+  } else {
+    // Auto-fetch image from Wikimedia for sites without a manual image
+    const wikiName = point.name.replace(/\s*\([^)]*\)\s*/g, '').trim();
+    const wikiUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(wikiName)}&prop=pageimages&format=json&pithumbsize=600&origin=*`;
+    imgEl.style.display = 'none';
+    placeholderEl.style.display = 'flex';
+    placeholderEl.textContent = point.icon;
+    fetch(wikiUrl).then(r => r.json()).then(data => {
+      const pages = data.query.pages;
+      const page = Object.values(pages)[0];
+      if (page && page.thumbnail && page.thumbnail.source) {
+        imgEl.src = page.thumbnail.source;
+        imgEl.alt = point.name;
+        imgEl.style.display = 'block';
+        imgEl.onerror = showPlaceholder;
+        placeholderEl.style.display = 'none';
+      }
+    }).catch(() => {});
+  }
+
+  // Extended history
+  const extendedEl = document.getElementById('card-extended');
+  if (details && details.history) {
+    document.getElementById('card-history').textContent = details.history;
+    extendedEl.style.display = 'block';
+  } else {
+    extendedEl.style.display = 'none';
+  }
+
+  // Scroll body to top
+  panel.querySelector('.card-body').scrollTop = 0;
+
   panel.classList.add('visible');
 }
 
 function closeInfoPanel() {
-  document.getElementById('info-panel').classList.remove('visible');
+  document.getElementById('detail-panel').classList.remove('visible');
   globe.ringsData([]);
+  globe.controls().autoRotateSpeed = 0.3;
 }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeInfoPanel();
+});
+
+// ============================================================
+// News Feed
+// ============================================================
+const NEWS_ITEMS = [
+  { date: "2026-03-28", tag: "GIZA", title: "Italian radiologist confirms hidden chambers beneath Giza Plateau using muon tomography", summary: "Dr. Mamdouh Eldamaty's team uses cosmic-ray imaging to map Hall of Amenti corridors and a second Sphinx chamber." },
+  { date: "2026-03-25", tag: "LIDAR", title: "Massive LIDAR survey reveals 1,000+ unknown structures in Guatemalan jungle", summary: "New aerial scanning uncovers interconnected Maya cities with 60,000+ structures hidden beneath dense canopy." },
+  { date: "2026-03-20", tag: "DISCOVERY", title: "Ground-penetrating radar reveals labyrinth beneath Hawara pyramid complex", summary: "The legendary Egyptian labyrinth described by Herodotus may have been found — enormous underground complex detected." },
+  { date: "2026-03-15", tag: "GOBEKLI TEPE", title: "New enclosure excavated at Göbekli Tepe reveals largest T-pillar yet found", summary: "Enclosure H contains a 7-meter pillar with unprecedented carvings depicting astronomical events." },
+  { date: "2026-03-10", tag: "AMAZON", title: "LIDAR reveals geometric earthworks spanning 400km in Brazilian Amazon", summary: "Network of connected sites suggests coordinated civilization existed in 'uninhabited' rainforest for millennia." },
+  { date: "2026-03-05", tag: "ANTARCTICA", title: "Satellite radar detects symmetrical structures beneath East Antarctic ice sheet", summary: "ESA's CryoSat-2 data shows geometric anomalies at depths consistent with pre-glaciation construction." },
+  { date: "2026-02-28", tag: "UNDERWATER", title: "ROV exploration maps extensive ruins off Mahabalipuram coast", summary: "Robotic submarine documents carved stone walls and temple foundations extending 1km offshore at 10m depth." },
+  { date: "2026-02-20", tag: "GIZA", title: "Second Sphinx structure detected beneath sand east of Great Pyramid", summary: "Italian-Egyptian team announces ground-penetrating radar evidence of lion-bodied statue buried under Giza Plateau." },
+  { date: "2026-02-15", tag: "DATING", title: "Gunung Padang core samples confirm 27,000-year-old construction layer", summary: "Indonesian site's deep layers show deliberate stone placement predating known civilization by 15,000+ years." },
+  { date: "2026-02-08", tag: "LIDAR", title: "Cambodia LIDAR reveals Angkor was world's largest pre-industrial city", summary: "New scans show urban network extending 1,500 sq km — 3x larger than previously mapped." },
+  { date: "2026-01-30", tag: "GENETICS", title: "Ancient DNA from Paracas skulls shows high percentage of unknown haplogroup", summary: "Genetic analysis of elongated skulls reveals maternal lineage not matching any known human population." },
+  { date: "2026-01-22", tag: "DISCOVERY", title: "Sonar reveals complex structures 800m deep in Cuba's western coast", summary: "Marine geologist Paulina Zelitsky's team captures high-res images of geometric formations on Caribbean seabed." },
+  { date: "2026-01-15", tag: "KARAHAN TEPE", title: "Karahan Tepe excavation uncovers underground ritual chamber with water channels", summary: "Carved bedrock chamber found with sophisticated hydraulic system dating to 10th millennium BCE." },
+  { date: "2026-01-08", tag: "SAHARA", title: "Satellite imagery reveals network of ancient rivers connecting Richat Structure to Atlantic", summary: "Green Sahara-era waterways suggest Richat Structure was once a port city matching Atlantis descriptions." },
+  { date: "2025-12-20", tag: "BOSNIAN PYRAMID", title: "Independent lab confirms 29,200-year age for organic material from Ravne tunnel", summary: "Carbon-14 dating of stalactite organic deposits deep within Bosnian tunnel complex yields pre-Ice Age date." },
+  { date: "2025-12-10", tag: "TECHNOLOGY", title: "3D scanning of Antikythera Mechanism reveals previously hidden 4th dial", summary: "Micro-CT scan discovers additional gear train suggesting the device tracked planetary positions for all 7 classical bodies." },
+];
+
+function buildNewsFeed() {
+  const list = document.getElementById('news-list');
+  NEWS_ITEMS.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'news-item';
+    div.innerHTML = `
+      <div class="news-date">
+        <span class="news-tag">${item.tag}</span>
+        ${item.date}
+      </div>
+      <div class="news-title">${item.title}</div>
+      <div class="news-summary">${item.summary}</div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+let newsVisible = false;
+function toggleNews() {
+  newsVisible = !newsVisible;
+  document.getElementById('news-panel').classList.toggle('visible', newsVisible);
+}
+
+buildNewsFeed();
 
 // ============================================================
 // Layer Controls
@@ -690,7 +1590,7 @@ function buildLayerToggles() {
         <div class="label">${config.label}</div>
         <div class="count">${count} sites</div>
       </div>
-      <div class="dot" style="background: ${config.color}"></div>
+      <div class="dot" style="background: ${config.color}; box-shadow: 0 0 6px ${config.color}88;"></div>
       <div class="switch"></div>
     `;
     div.addEventListener('click', () => {
@@ -727,7 +1627,7 @@ function updateStats() {
 }
 
 function resetView() {
-  globe.pointOfView({ lat: 30, lng: 31, altitude: 2.5 }, 1000);
+  globe.pointOfView({ lat: 28, lng: 31, altitude: 2.2 }, 1200);
   globe.controls().autoRotate = true;
   closeInfoPanel();
 }
@@ -738,8 +1638,8 @@ function resetView() {
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
   sidebar.classList.toggle('collapsed');
-  const btn = document.getElementById('sidebar-toggle');
-  btn.textContent = sidebar.classList.contains('collapsed') ? '▶' : '◀';
+  document.getElementById('sidebar-toggle').textContent =
+    sidebar.classList.contains('collapsed') ? '▶' : '◀';
 }
 
 // ============================================================
@@ -762,11 +1662,17 @@ searchBox.addEventListener('input', () => {
     const div = document.createElement('div');
     div.className = 'search-result';
     div.innerHTML = `
-      <div class="sr-dot" style="background: ${p.color}"></div>
-      <div class="sr-name">${p.name}</div>
+      <div class="sr-dot" style="background: ${p.color}; box-shadow: 0 0 4px ${p.color};"></div>
+      <div class="sr-name">${highlightMatch(p.name, q)}</div>
       <div class="sr-layer">${p.icon}</div>
     `;
     div.addEventListener('click', () => {
+      // Ensure layer is visible
+      if (!layerVisibility[p.layerKey]) {
+        layerVisibility[p.layerKey] = true;
+        document.querySelector(`.layer-toggle[data-layer="${p.layerKey}"]`)?.classList.add('active');
+        updateGlobe();
+      }
       handlePointClick(p);
       searchBox.value = '';
       searchResults.innerHTML = '';
@@ -774,6 +1680,12 @@ searchBox.addEventListener('input', () => {
     searchResults.appendChild(div);
   });
 });
+
+function highlightMatch(text, query) {
+  const idx = text.toLowerCase().indexOf(query);
+  if (idx === -1) return text;
+  return text.slice(0, idx) + '<strong style="color:#a78bfa">' + text.slice(idx, idx + query.length) + '</strong>' + text.slice(idx + query.length);
+}
 
 // ============================================================
 // Init
