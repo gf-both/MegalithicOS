@@ -1,0 +1,8 @@
+{
+  "name": "megalithic-globe",
+  "version": "1.0.0",
+  "description": "Interactive 3D globe mapping megalithic sites, anomalies, and ancient mysteries",
+  "scripts": {
+    "dev": "npx serve -p 3000 ."
+  }
+}
